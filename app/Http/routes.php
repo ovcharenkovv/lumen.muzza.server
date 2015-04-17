@@ -11,7 +11,7 @@
 */
 
 $app->get('/', function() use ($app) {
-	return $app->welcome();
+	return "Hello World";
 });
 
 $app->get('genres', '\App\Http\Controllers\GenreController@index');
