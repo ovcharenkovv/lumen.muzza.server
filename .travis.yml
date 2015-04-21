@@ -31,3 +31,7 @@ script:
 after_script:
   - ls -laR app/storage
   - cat app/storage/logs/*
+
+notifications:
+  email:
+    - ovcharenkovv+travis@gmail.com
