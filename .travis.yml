@@ -19,7 +19,7 @@ before_script:
   - cp .env.example .env
   - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction --dev
-  - chmod -R 777 app/storage
+  - chmod -R 777 storage
   - mysql -e 'create database muzza;'
   - php artisan migrate:install --no-interaction -vvv
 
