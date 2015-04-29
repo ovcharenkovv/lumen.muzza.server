@@ -17,3 +17,4 @@ $app->get('/', function() use ($app) {
 $app->get('genres', '\App\Http\Controllers\GenreController@index');
 
 $app->get('radios', '\App\Http\Controllers\RadioController@index');
+$app->get('radios/{id}', '\App\Http\Controllers\RadioController@show');

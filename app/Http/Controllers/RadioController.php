@@ -12,4 +12,11 @@ class RadioController extends Controller {
         );
     }
 
+    public function show($id)
+    {
+        return response()->json(
+            DB::selectOne('select * from radios where id = ?',[$id])
+        );
+    }
+
 }
