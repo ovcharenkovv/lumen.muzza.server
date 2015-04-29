@@ -10,16 +10,15 @@ class GenreTableSeeder extends Seeder {
 
         DB::insert(
             'insert into genres
-            (sh_id, name, sh_name, radios_amount, bg) values (?, ?, ?, ?, ?)',
-            [777, 'Jazz','Jazz Sh',50,'/img/jazz.jpg']
+            (id, sh_id, name, sh_name, radios_amount, bg) values (?, ?, ?, ?, ?, ?)',
+            [1, 777, 'Jazz','Jazz',50,'/img/jazz.jpg']
         );
 
         DB::insert(
             'insert into genres
-            (sh_id, name, sh_name, radios_amount, bg) values (?, ?, ?, ?, ?)',
-            [800, 'Chill','Chill Sh',0,'/img/chill.jpg']
+            (id, sh_id, name, sh_name, radios_amount, bg) values (?, ?, ?, ?, ?, ?)',
+            [2, 800, 'Chill','Chill',10,'/img/chill.jpg']
         );
-
 
     }
 

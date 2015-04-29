@@ -23,11 +23,11 @@ class GenreTest extends TestCase {
 
         $this->assertArrayNotHasKey('undefined', $data[0]);
 
-        $this->assertEquals(777, $data[0]['sh_id']);
-        $this->assertEquals('Jazz', $data[0]['name']);
-        $this->assertEquals('Jazz Sh', $data[0]['sh_name']);
-        $this->assertEquals(50, $data[0]['radios_amount']);
-        $this->assertEquals('/img/jazz.jpg', $data[0]['bg']);
+        $this->assertEquals(800, $data[0]['sh_id']);
+        $this->assertEquals('Chill', $data[0]['name']);
+        $this->assertEquals('Chill', $data[0]['sh_name']);
+        $this->assertEquals(10, $data[0]['radios_amount']);
+        $this->assertEquals('/img/chill.jpg', $data[0]['bg']);
 
         $this->assertNotEquals('undefined', $data[0]['name']);
 
