@@ -7,12 +7,12 @@ class RadioTest extends TestCase {
      *
      * @return void
      */
-    public function testIndex()
+    public function testGetRadiosIndex()
     {
         $response = $this->call('GET', '/radios');
 
         $this->assertResponseOk();
-        
+
         $data = json_decode($response->getContent(),true);
 
         $this->assertArrayHasKey('sh_id', $data[0]);

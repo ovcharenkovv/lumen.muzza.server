@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+
 class GenreTest extends TestCase {
 
     /**
@@ -7,7 +9,7 @@ class GenreTest extends TestCase {
      *
      * @return void
      */
-    public function testIndex()
+    public function testGetGenresIndex()
     {
         $response = $this->call('GET', '/genres');
 
