@@ -14,8 +14,13 @@ class GenreController extends Controller {
 
     public function show($id)
     {
+        $radios = DB::select('select * from radios where genre_id = ? order by name asc',[$id]);
+
+        $genre = DB::selectOne('select * from genres where id = ?',[$id]);
+        $genre->radios = $radios;
+
         return response()->json(
-            DB::selectOne('select * from genres where id = ?',[$id])
+            $genre
         );
     }
 

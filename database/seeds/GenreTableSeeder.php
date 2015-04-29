@@ -20,6 +20,13 @@ class GenreTableSeeder extends Seeder {
             [2, 800, 'Chill','Chill',10,'/img/chill.jpg']
         );
 
+        DB::insert(
+            'insert into genres
+            (id, sh_id, name, sh_name, radios_amount, bg) values (?, ?, ?, ?, ?, ?)',
+            [3, 0, 'Lounge','Lounge',0,'/img/lounge.jpg']
+        );
+
+
     }
 
 }
