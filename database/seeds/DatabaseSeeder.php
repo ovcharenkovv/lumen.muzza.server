@@ -11,8 +11,11 @@ class DatabaseSeeder extends Seeder {
         Model::unguard();
 
         $this->call('GenreTableSeeder');
-
         $this->command->info('Genre table seeded!');
+
+        $this->call('RadioTableSeeder');
+        $this->command->info('Radio table seeded!');
+
     }
 
 }
