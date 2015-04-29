@@ -3,7 +3,7 @@
 class RadioTest extends TestCase {
 
     /**
-     * A test for radio endpoint
+     * A test for radio array endpoint
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class RadioTest extends TestCase {
     }
 
     /**
-     * A test for radio endpoint
+     * A test for one radio endpoint
      *
      * @return void
      */

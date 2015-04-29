@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 class GenreTest extends TestCase {
 
     /**
-     * A test for genres endpoint
+     * A test for genres array endpoint
      *
      * @return void
      */
@@ -32,9 +32,31 @@ class GenreTest extends TestCase {
         $this->assertEquals('/img/chill.jpg', $data[0]['bg']);
 
         $this->assertNotEquals('undefined', $data[0]['name']);
-
-
-
     }
+
+
+    /**
+     * A test for one genres endpoint
+     *
+     * @return void
+     */
+    public function testGetGenresShow()
+    {
+        $response = $this->call('GET', '/genres/1');
+
+        $this->assertResponseOk();
+
+        $data = json_decode($response->getContent(),true);
+
+        $this->assertEquals(777, $data['sh_id']);
+        $this->assertEquals('Jazz', $data['name']);
+        $this->assertEquals('Jazz', $data['sh_name']);
+        $this->assertEquals(50, $data['radios_amount']);
+        $this->assertEquals('/img/jazz.jpg', $data['bg']);
+
+        $this->assertNotEquals('undefined', $data['name']);
+    }
+
+
 
 }

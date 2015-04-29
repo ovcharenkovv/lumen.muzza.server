@@ -12,4 +12,11 @@ class GenreController extends Controller {
         );
     }
 
+    public function show($id)
+    {
+        return response()->json(
+            DB::selectOne('select * from genres where id = ?',[$id])
+        );
+    }
+
 }
