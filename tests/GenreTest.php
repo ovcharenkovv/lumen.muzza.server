@@ -50,7 +50,7 @@ class GenreTest extends TestCase {
     }
 
     /**
-     * A test for one genres endpoint
+     * A test for one genres endpoint with radios
      *
      * @return void
      */
