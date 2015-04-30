@@ -51,4 +51,29 @@ class RadioTest extends TestCase {
 
     }
 
+
+    /**
+     * A test for radio tracks
+     *
+     * @return void
+     */
+    public function testGetRadioTrackIndex()
+    {
+        $response = $this->call('GET', '/radios/1/tracks');
+
+        $this->assertResponseOk();
+
+        $data = json_decode($response->getContent());
+
+        $this->assertEquals('Aerosmith', $data[0]->artist_name);
+        $this->assertEquals('Livin On The Edge', $data[0]->track_name);
+
+        $this->assertEquals('Eagles', $data[1]->artist_name);
+        $this->assertEquals('Take it to the limit', $data[1]->track_name);
+
+        $this->assertNotEquals('undefined', $data[0]->artist_name);
+
+    }
+
+
 }

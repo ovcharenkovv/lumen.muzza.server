@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddGenreIdToRadios extends Migration {
+class CreateRadioTrackTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,15 +12,19 @@ class AddGenreIdToRadios extends Migration {
 	 */
 	public function up()
 	{
-        Schema::table('radios', function($table)
+        Schema::create('radio_tracks', function($table)
         {
-            $table->integer('genre_id')->unsigned();
+            $table->increments('id');
+            $table->string('artist_name', 255);
+            $table->string('track_name', 255);
 
-            $table->foreign('genre_id')
+            $table->integer('radio_id')->unsigned();
+            $table->foreign('radio_id')
                 ->references('id')
                 ->on('genres')
                 ->onDelete('cascade')
             ;
+
         });
 	}
 
@@ -31,11 +35,7 @@ class AddGenreIdToRadios extends Migration {
 	 */
 	public function down()
 	{
-        Schema::table('radios', function($table)
-        {
-            $table->dropForeign('radios_genre_id_foreign');
-            $table->dropColumn('genre_id');
-        });
+        Schema::drop('radio_tracks');
 	}
 
 }

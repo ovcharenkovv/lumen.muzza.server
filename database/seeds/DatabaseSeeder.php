@@ -16,6 +16,10 @@ class DatabaseSeeder extends Seeder {
         $this->call('RadioTableSeeder');
         $this->command->info('Radio table seeded!');
 
+        $this->call('RadioTrackTableSeeder');
+        $this->command->info('RadioTrack table seeded!');
+
+
     }
 
 }

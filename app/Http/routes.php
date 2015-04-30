@@ -19,3 +19,4 @@ $app->get('genres/{id}', '\App\Http\Controllers\GenreController@show');
 
 $app->get('radios', '\App\Http\Controllers\RadioController@index');
 $app->get('radios/{id}', '\App\Http\Controllers\RadioController@show');
+$app->get('radios/{id}/tracks', '\App\Http\Controllers\RadioController@indexTracks');

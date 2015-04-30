@@ -19,4 +19,14 @@ class RadioController extends Controller {
         );
     }
 
+    public function indexTracks($id)
+    {
+        $tracks = DB::select('select * from radio_tracks where radio_id = ?',[$id]);
+
+        return response()->json(
+            $tracks
+        );
+    }
+
+
 }
