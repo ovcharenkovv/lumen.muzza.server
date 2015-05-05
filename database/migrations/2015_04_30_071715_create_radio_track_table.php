@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateRadioTrackTable extends Migration {
@@ -21,7 +20,7 @@ class CreateRadioTrackTable extends Migration {
             $table->integer('radio_id')->unsigned();
             $table->foreign('radio_id')
                 ->references('id')
-                ->on('genres')
+                ->on('radios')
                 ->onDelete('cascade')
             ;
 
