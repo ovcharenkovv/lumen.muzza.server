@@ -25,7 +25,6 @@ before_script:
 
 script:
   - php artisan migrate --no-interaction -vvv
-  - php artisan db:seed --no-interaction -vvv
   - vendor/bin/phpunit --verbose
 
 after_script:
