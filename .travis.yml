@@ -20,7 +20,7 @@ before_script:
   - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction --dev
   - chmod -R 777 storage
-  - mysql -e 'create database muzza.test;'
+  - mysql -e 'create database muzza_test;'
   - php artisan migrate:install --no-interaction -vvv
 
 script:
