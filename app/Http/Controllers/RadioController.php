@@ -1,6 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use App\Services\Shoutcast\TrackParser as ShTrackParser;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -8,21 +7,6 @@ use Illuminate\Support\Facades\DB;
  * @package App\Http\Controllers
  */
 class RadioController extends Controller {
-
-    /**
-     * The shoutcast track parser instance.
-     */
-    protected $shTrackParser;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @param ShTrackParser $shTrackParser
-     */
-    public function __construct(ShTrackParser $shTrackParser)
-    {
-        $this->shTrackParser = $shTrackParser;
-    }
 
     /**
      * Return all radios
@@ -57,10 +41,6 @@ class RadioController extends Controller {
      */
     public function indexTracks($id)
     {
-//        var_dump(
-//            $this->shTrackParser->get(1)
-//        );
-
         $tracks = DB::select('select * from radio_tracks where radio_id = ?',[$id]);
 
         return response()->json(
