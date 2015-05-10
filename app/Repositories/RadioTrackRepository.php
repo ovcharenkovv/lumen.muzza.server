@@ -6,6 +6,6 @@ class RadioTrackRepository
 {
     public function getRadioTracks($radioId, $limit = 10)
     {
-        return DB::select("select * from radio_tracks where radio_id = ? limit ?",[$radioId,$limit]);
+        return DB::select("select * from radio_tracks where radio_id = ? order by created_at desc limit ?",[$radioId,$limit]);
     }
 }
