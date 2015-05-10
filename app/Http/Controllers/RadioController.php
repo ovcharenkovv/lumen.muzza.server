@@ -1,12 +1,20 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use App\Repositories\RadioTrackRepository as RadioTrack;
 
 /**
  * Class RadioController
  * @package App\Http\Controllers
  */
 class RadioController extends Controller {
+
+    private $tracks;
+
+    public function __construct(RadioTrack $tracks) {
+
+        $this->tracks = $tracks;
+    }
 
     /**
      * Return all radios
@@ -41,7 +49,7 @@ class RadioController extends Controller {
      */
     public function indexTracks($id)
     {
-        $tracks = DB::select('select * from radio_tracks where radio_id = ?',[$id]);
+        $tracks = $this->tracks->getRadioTracks($id);
 
         return response()->json(
             $tracks
