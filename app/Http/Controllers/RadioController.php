@@ -1,7 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
-use App\Repositories\RadioTrackRepository as RadioTrack;
+use App\Repositories\RadioTrackRepository as RadioTrackRepo;
+use App\Services\RadioTrackManager;
 
 /**
  * Class RadioController
@@ -9,11 +10,14 @@ use App\Repositories\RadioTrackRepository as RadioTrack;
  */
 class RadioController extends Controller {
 
-    private $tracks;
+    private $radioTrackRepo;
 
-    public function __construct(RadioTrack $tracks) {
+    private $radioTrackManager;
 
-        $this->tracks = $tracks;
+    public function __construct(RadioTrackRepo $radioTrackRepo, RadioTrackManager $radioTrackManager) {
+
+        $this->radioTrackRepo = $radioTrackRepo;
+        $this->radioTrackManager = $radioTrackManager;
     }
 
     /**
@@ -49,7 +53,9 @@ class RadioController extends Controller {
      */
     public function indexTracks($id)
     {
-        $tracks = $this->tracks->getRadioTracks($id);
+        $this->radioTrackManager->refreshTracks($id, 914897);
+
+        $tracks = $this->radioTrackRepo->getRadioTracks($id);
 
         return response()->json(
             $tracks
