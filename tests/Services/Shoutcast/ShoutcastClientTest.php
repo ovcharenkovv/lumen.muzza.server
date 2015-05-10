@@ -18,4 +18,20 @@ class ShoutcastClientTest extends TestCase
 
     }
 
+    public function testException()
+    {
+        $test = function() {
+
+            $client = new ShoutcastClient(
+                new Client()
+            );
+
+            $client->getStationObject(0);
+
+        };
+
+        $this->assertException( $test, 'Exception', 0, 'Station not found' );
+
+    }
+
 }
