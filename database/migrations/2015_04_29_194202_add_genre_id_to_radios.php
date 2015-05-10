@@ -12,7 +12,7 @@ class AddGenreIdToRadios extends Migration {
 	 */
 	public function up()
 	{
-        Schema::table('radios', function($table)
+        Schema::table('radios', function(Blueprint $table)
         {
             $table->integer('genre_id')->unsigned();
 

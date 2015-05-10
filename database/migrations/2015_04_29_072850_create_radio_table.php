@@ -12,7 +12,7 @@ class CreateRadioTable extends Migration {
 	 */
 	public function up()
 	{
-        Schema::create('radios', function($table)
+        Schema::create('radios', function(Blueprint $table)
         {
             $table->increments('id');
             $table->integer('sh_id');

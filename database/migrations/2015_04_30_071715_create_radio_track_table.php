@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateRadioTrackTable extends Migration {
@@ -11,7 +12,7 @@ class CreateRadioTrackTable extends Migration {
 	 */
 	public function up()
 	{
-        Schema::create('radio_tracks', function($table)
+        Schema::create('radio_tracks', function(Blueprint $table)
         {
             $table->increments('id');
             $table->string('artist_name', 255);
@@ -23,6 +24,8 @@ class CreateRadioTrackTable extends Migration {
                 ->on('radios')
                 ->onDelete('cascade')
             ;
+
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
         });
 	}
