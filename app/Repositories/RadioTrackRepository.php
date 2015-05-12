@@ -2,9 +2,18 @@
 
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class RadioTrackRepository
+ * @package App\Repositories
+ */
 class RadioTrackRepository
 {
-    public function getRadioTracks($radioId, $limit = 10)
+    /**
+     * @param $radioId
+     * @param int $limit
+     * @return mixed
+     */
+    public function getByRadioId($radioId, $limit = 10)
     {
         return DB::select("
             select *, CONCAT_WS(' - ', artist_name, track_name) as title
@@ -15,4 +24,16 @@ class RadioTrackRepository
             ",[$radioId,$limit]
         );
     }
+
+
+    /**
+     * @param $radioId
+     * @return mixed
+     */
+    public function getLastRadioTrack($radioId)
+    {
+        $radioTracks = $this->getByRadioId($radioId);
+        return array_shift($radioTracks);
+    }
+
 }

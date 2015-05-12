@@ -29,32 +29,30 @@ class RadioTrackManager
     public function refreshTracks($radioId)
     {
         $radio = $this->radioRepo->get($radioId);
-
-        if(!$radio) {
-            return;
-        }
-
-        $radioTracks = $this->radioTrackRepo->getRadioTracks($radioId);
-
-        $lastRadioTrack = array_shift($radioTracks);
-
-        if (!$lastRadioTrack || !$lastRadioTrack->created_at) {
-            return;
-        }
-
-        $lastTrackCreateAt = Carbon::createFromFormat('Y-n-j G:i:s', $lastRadioTrack->created_at);
-
-        if (Carbon::now()->diffInSeconds( $lastTrackCreateAt) <= 60) {
-            return;
-        }
-
         $currentRadioTrack = $this->client->getStationObject($radio->sh_id);
 
-        if (!$currentRadioTrack->CurrentTrack || $lastRadioTrack->title == $currentRadioTrack->CurrentTrack ) {
-            return;
+        $lastRadioTrack = $this->radioTrackRepo->getLastRadioTrack($radioId);
+
+        if ($lastRadioTrack) {
+
+            $lastTrackCreateAt = Carbon::createFromFormat('Y-n-j G:i:s', $lastRadioTrack->created_at);
+
+            if (Carbon::now()->diffInSeconds( $lastTrackCreateAt) <= 60) {
+                return true;
+            }
+
+            if (!$currentRadioTrack->CurrentTrack || $lastRadioTrack->title == $currentRadioTrack->CurrentTrack ) {
+                return true;
+            }
         }
 
+
+
+
+
         $this->saveRadioTrack($currentRadioTrack->CurrentTrack, $radioId);
+
+        return true;
 
     }
 

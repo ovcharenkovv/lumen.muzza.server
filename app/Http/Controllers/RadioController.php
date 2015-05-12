@@ -1,8 +1,11 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Queue;
+use App\Jobs\RefreshRadioTrackJob;
+
+use App\Repositories\RadioRepository as RadioRepo;
 use App\Repositories\RadioTrackRepository as RadioTrackRepo;
-use App\Services\RadioTrackManager;
 
 /**
  * Class RadioController
@@ -10,14 +13,22 @@ use App\Services\RadioTrackManager;
  */
 class RadioController extends Controller {
 
+    /**
+     * @var RadioRepo
+     */
+    private $radioRepo;
+    /**
+     * @var RadioTrackRepo
+     */
     private $radioTrackRepo;
 
-    private $radioTrackManager;
-
-    public function __construct(RadioTrackRepo $radioTrackRepo, RadioTrackManager $radioTrackManager) {
-
+    /**
+     * @param RadioRepo $radioRepo
+     * @param RadioTrackRepo $radioTrackRepo
+     */
+    public function __construct( RadioRepo $radioRepo, RadioTrackRepo $radioTrackRepo) {
+        $this->radioRepo = $radioRepo;
         $this->radioTrackRepo = $radioTrackRepo;
-        $this->radioTrackManager = $radioTrackManager;
     }
 
     /**
@@ -28,37 +39,35 @@ class RadioController extends Controller {
     public function index()
     {
         return response()->json(
-            DB::select('select * from radios')
+            $this->radioRepo->getAll()
         );
     }
 
     /**
      * Return radios data by id
      *
-     * @param int $id
+     * @param int $radioId
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show($id)
+    public function show($radioId)
     {
         return response()->json(
-            DB::selectOne('select * from radios where id = ?',[$id])
+            $this->radioRepo->get($radioId)
         );
     }
 
     /**
      * Return radio tracks by id
      *
-     * @param int $id
+     * @param int $radioId
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexTracks($id)
+    public function indexTracks($radioId)
     {
-        $this->radioTrackManager->refreshTracks($id, 914897);
-
-        $tracks = $this->radioTrackRepo->getRadioTracks($id);
+        Queue::push(new RefreshRadioTrackJob($radioId));
 
         return response()->json(
-            $tracks
+            $this->radioTrackRepo->getByRadioId($radioId)
         );
     }
 

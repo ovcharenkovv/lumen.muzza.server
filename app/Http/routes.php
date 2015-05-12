@@ -15,8 +15,8 @@ $app->get('/', function() use ($app) {
 });
 
 $app->get('genres', '\App\Http\Controllers\GenreController@index');
-$app->get('genres/{id}', '\App\Http\Controllers\GenreController@show');
+$app->get('genres/{genreId}', '\App\Http\Controllers\GenreController@show');
 
 $app->get('radios', '\App\Http\Controllers\RadioController@index');
-$app->get('radios/{id}', '\App\Http\Controllers\RadioController@show');
-$app->get('radios/{id}/tracks', '\App\Http\Controllers\RadioController@indexTracks');
+$app->get('radios/{radioId}', '\App\Http\Controllers\RadioController@show');
+$app->get('radios/{radioId}/tracks', '\App\Http\Controllers\RadioController@indexTracks');

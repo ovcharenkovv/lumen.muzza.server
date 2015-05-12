@@ -1,25 +1,50 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 
+use App\Repositories\GenreRepository as GenreRepo;
+use App\Repositories\RadioRepository as RadioRepo;
+
+
+/**
+ * Class GenreController
+ * @package App\Http\Controllers
+ */
 class GenreController extends Controller {
 
+    /**
+     * @var GenreRepo
+     */
+    private $genreRepo;
+
+    /**
+     * @param GenreRepo $genreRepo
+     * @param RadioRepo $radioRepo
+     */
+    public function __construct(GenreRepo $genreRepo, RadioRepo $radioRepo ) {
+        $this->genreRepo = $genreRepo;
+        $this->radioRepo = $radioRepo;
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function index()
     {
         return response()->json(
-            DB::select('select * from genres order by name asc')
+            $this->genreRepo->getAll()
         );
     }
 
-    public function show($id)
+    /**
+     * @param $genreId
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function show($genreId)
     {
-        $genre = DB::selectOne('select * from genres where id = ?',[$id]);
+        $genre = $this->genreRepo->get($genreId);
 
-        if ($genre) {
-            $genre->radios = DB::select('select * from radios where genre_id = ? order by name asc',[$id]);
-        }
-
+        $genre->radios = $this->radioRepo->getByGenreId($genreId);
 
         return response()->json(
             $genre
