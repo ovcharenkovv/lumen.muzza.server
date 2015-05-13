@@ -20,9 +20,19 @@ class RadioRepository
      * @param $radioId
      * @return mixed
      */
+    public function getRadioShId($radioId)
+    {
+        $radio = $this->get($radioId);
+        return $radio->sh_id;
+    }
+
+    /**
+     * @param $radioId
+     * @return mixed
+     */
     public function get($radioId)
     {
-        return DB::selectOne('select * from radios where id = ?',[$radioId]);
+        return DB::selectOne('select * from radios where id = ?', [$radioId]);
     }
 
     /**
