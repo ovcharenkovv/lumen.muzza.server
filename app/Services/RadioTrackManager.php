@@ -45,62 +45,56 @@ class RadioTrackManager
     {
         $lastRadioTrackObj = $this->radioTrackRepo->getLastRadioTrack($radioId);
 
-        if ($this->isTrackCreatedMoreThen($lastRadioTrackObj, getenv('TRACK_REFRESH_TIME'))) {
+        $currentRadioTrackObj = $this->client->getCachedStationObject(
+            $this->radioRepo->getRadioShId($radioId)
+        );
 
-            $currentRadioTrackObj = $this->client->getCachedStationObject(
-                $this->radioRepo->getRadioShId($radioId)
-            );
+        if (empty($lastRadioTrackObj) && $this->isCurrentRadioTrackObjValid($currentRadioTrackObj)) {
+            $this->saveRadioTrack($currentRadioTrackObj->CurrentTrack, $radioId);
+        }
 
-            if ($this->validBothTracks($currentRadioTrackObj, $lastRadioTrackObj)) {
-                $this->saveRadioTrack($currentRadioTrackObj->CurrentTrack, $radioId);
-            }
+
+        if ($this->isLastRadioTrackObjValid($lastRadioTrackObj) &&
+            $this->isCurrentRadioTrackObjValid($currentRadioTrackObj) &&
+            $this->isTrackObjTitlesNotSame($lastRadioTrackObj, $currentRadioTrackObj)
+        )
+        {
+            $this->saveRadioTrack($currentRadioTrackObj->CurrentTrack, $radioId);
         }
 
     }
 
+
     /**
      * @param $lastRadioTrack
-     * @param int $seconds
      * @return bool
      */
-    public function isTrackCreatedMoreThen($lastRadioTrack, $seconds = 60)
-    {
-
-        if (!$lastRadioTrack) {
-            return true;
-        }
-
-        $lastTrackCreateAt = Carbon::createFromFormat('Y-n-j G:i:s', $lastRadioTrack->created_at);
-
-        if (Carbon::now()->diffInSeconds($lastTrackCreateAt) > $seconds) {
-            return true;
-        }
-
-        return false;
+    public function isLastRadioTrackObjValid($lastRadioTrack) {
+        return
+            isset($lastRadioTrack->title) &&
+            !empty($lastRadioTrack->title)
+        ;
     }
 
     /**
      * @param $currentRadioTrackObj
-     * @param $lastRadioTrackObj
      * @return bool
      */
-    public function validBothTracks($currentRadioTrackObj, $lastRadioTrackObj)
-    {
-
-        if (!$currentRadioTrackObj->CurrentTrack) {
-            return false;
-        }
-
-        if (!strpos($currentRadioTrackObj->CurrentTrack, '-')) {
-            return false;
-        }
-
-        if ($lastRadioTrackObj && $lastRadioTrackObj->title == $currentRadioTrackObj->CurrentTrack) {
-            return false;
-        }
-
-        return true;
+    public function isCurrentRadioTrackObjValid($currentRadioTrackObj) {
+        return
+            isset($currentRadioTrackObj->CurrentTrack) &&
+            !empty($currentRadioTrackObj->CurrentTrack)&&
+            strpos($currentRadioTrackObj->CurrentTrack, '-')
+        ;
     }
+    public function isTrackObjTitlesNotSame($lastRadioTrackObj,$currentRadioTrackObj) {
+        return $lastRadioTrackObj->title != $currentRadioTrackObj->CurrentTrack;
+    }
+
+
+
+
+
 
 
     /**
