@@ -37,7 +37,7 @@ class ShoutcastClient
 
         if (is_null($station)) {
             $station = $this->getStationObject($stationId);
-            Cache::put($cacheKey, $station, 1);
+            Cache::put($cacheKey, $station, getenv("SHOUTCAST_REFRESH_DELAY"));
         }
 
         return $station;
