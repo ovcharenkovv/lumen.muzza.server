@@ -15,7 +15,7 @@ class RadioTrackIndexTest extends TestCase
         DB::insert(
             'INSERT INTO genres
             (id, sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?, ?)',
-            [1, 800, 'Punk', 'Punk', 10, '/img/Punk.jpg']
+            [100, 800, 'Punk', 'Punk', 10, '/img/Punk.jpg']
         );
 
 
@@ -23,13 +23,13 @@ class RadioTrackIndexTest extends TestCase
             'INSERT INTO radios
             (id, sh_id, name, sh_name, genre, stream_url, genre_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [
-                1,
+                100,
                 606342,
                 'Alt Rock 101',
                 'Alt Rock 101',
                 'Punk',
                 'http://streaming.radionomy.com/AltRock101',
-                1
+                100
             ]
         );
 
@@ -37,10 +37,10 @@ class RadioTrackIndexTest extends TestCase
             'INSERT INTO radio_tracks
             (id, artist_name, track_name, radio_id) VALUES (?, ?, ?, ?)',
             [
-                1,
+                100,
                 "Aerosmith",
                 "Livin On The Edge",
-                1
+                100
             ]
         );
 
@@ -56,11 +56,11 @@ class RadioTrackIndexTest extends TestCase
     {
         parent::tearDown();
 
-        DB::delete('DELETE FROM radio_tracks WHERE id = ?', [1]);
+        DB::delete('DELETE FROM radio_tracks WHERE id = ?', [100]);
 
-        DB::delete('DELETE FROM radios WHERE id = ?', [1]);
+        DB::delete('DELETE FROM radios WHERE id = ?', [100]);
 
-        DB::delete('DELETE FROM genres WHERE id = ?', [1]);
+        DB::delete('DELETE FROM genres WHERE id = ?', [100]);
 
     }
 
@@ -72,7 +72,7 @@ class RadioTrackIndexTest extends TestCase
      */
     public function testGetRadioTrackIndex()
     {
-        $response = $this->call('GET', '/radios/1/tracks');
+        $response = $this->call('GET', '/radios/100/tracks');
 
         $this->assertResponseOk();
 

@@ -15,20 +15,20 @@ class GenreRadiosShowTest extends TestCase
         DB::insert(
             'INSERT INTO genres
             (id, sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?, ?)',
-            [1, 800, 'Chill', 'Chill', 10, '/img/chill.jpg']
+            [100, 800, 'Chill', 'Chill', 10, '/img/chill.jpg']
         );
 
         DB::insert(
             'INSERT INTO radios
             (id, sh_id, name, sh_name, genre, stream_url, genre_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [
-                1,
+                100,
                 23683,
                 'FD LOUNGE RADIO',
                 'FD LOUNGE RADIO',
                 'Lounge',
                 'http://listen.radionomy.com/FD-LOUNGE-RADIO?icy=http',
-                1
+                100
             ]
         );
     }
@@ -42,8 +42,8 @@ class GenreRadiosShowTest extends TestCase
     {
         parent::tearDown();
 
-        DB::delete('DELETE FROM radios WHERE id = ?', [1]);
-        DB::delete('DELETE FROM genres WHERE id = ?', [1]);
+        DB::delete('DELETE FROM radios WHERE id = ?', [100]);
+        DB::delete('DELETE FROM genres WHERE id = ?', [100]);
     }
 
 
@@ -54,7 +54,7 @@ class GenreRadiosShowTest extends TestCase
      */
     public function testGetGenreRadiosShow()
     {
-        $response = $this->call('GET', '/genres/1');
+        $response = $this->call('GET', '/genres/100');
 
         $this->assertResponseOk();
 

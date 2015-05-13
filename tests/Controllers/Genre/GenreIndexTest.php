@@ -14,8 +14,8 @@ class GenreIndexTest extends TestCase
 
         DB::insert(
             'INSERT INTO genres
-            (id, sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?, ?)',
-            [1, 800, 'Chill', 'Chill', 10, '/img/chill.jpg']
+            (sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?)',
+            [800, 'Chill', 'Chill', 10, '/img/chill.jpg']
         );
     }
 
@@ -28,7 +28,7 @@ class GenreIndexTest extends TestCase
     {
         parent::tearDown();
 
-        DB::delete('DELETE FROM genres WHERE id = ?', [1]);
+        DB::delete('DELETE FROM genres WHERE sh_id = ?', [800]);
     }
 
 

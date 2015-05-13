@@ -15,7 +15,7 @@ class RadioIndexTest extends TestCase
         DB::insert(
             'INSERT INTO genres
             (id, sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?, ?)',
-            [1, 800, 'Punk', 'Punk', 10, '/img/Punk.jpg']
+            [100, 800, 'Punk', 'Punk', 10, '/img/Punk.jpg']
         );
 
 
@@ -23,13 +23,13 @@ class RadioIndexTest extends TestCase
             'INSERT INTO radios
             (id, sh_id, name, sh_name, genre, stream_url, genre_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [
-                1,
+                100,
                 606342,
                 'Alt Rock 101',
                 'Alt Rock 101',
                 'Punk',
                 'http://streaming.radionomy.com/AltRock101',
-                1
+                100
             ]
         );
 
@@ -44,9 +44,9 @@ class RadioIndexTest extends TestCase
     {
         parent::tearDown();
 
-        DB::delete('DELETE FROM radios WHERE id = ?', [1]);
+        DB::delete('DELETE FROM radios WHERE id = ?', [100]);
 
-        DB::delete('DELETE FROM genres WHERE id = ?', [1]);
+        DB::delete('DELETE FROM genres WHERE id = ?', [100]);
     }
 
 

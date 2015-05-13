@@ -15,7 +15,7 @@ class GenreShowTest extends TestCase
         DB::insert(
             'INSERT INTO genres
             (id, sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?, ?)',
-            [1, 777, 'Jazz', 'Jazz', 50, '/img/jazz.jpg']
+            [100, 777, 'Jazz', 'Jazz', 50, '/img/jazz.jpg']
         );
     }
 
@@ -28,7 +28,7 @@ class GenreShowTest extends TestCase
     {
         parent::tearDown();
 
-        DB::delete('DELETE FROM genres WHERE id = ?', [1]);
+        DB::delete('DELETE FROM genres WHERE id = ?', [100]);
     }
 
 
