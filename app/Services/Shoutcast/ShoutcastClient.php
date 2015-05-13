@@ -2,6 +2,7 @@
 
 use Exception;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class ShoutcastClient
@@ -22,6 +23,25 @@ class ShoutcastClient
         $this->client = $client;
     }
 
+    /**
+     * @param $stationId
+     * @return mixed
+     * @throws Exception
+     */
+    public function getCachedStationObject($stationId)
+    {
+
+        $cacheKey = 'station-' . $stationId;
+
+        $station = Cache::get($cacheKey);
+
+        if (is_null($station)) {
+            $station = $this->getStationObject($stationId);
+            Cache::put($cacheKey, $station, 1);
+        }
+
+        return $station;
+    }
 
     /**
      * @param $stationId
