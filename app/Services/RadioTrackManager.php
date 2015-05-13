@@ -1,23 +1,35 @@
 <?php namespace App\Services;
 
-use Exception;
+use App\Repositories\RadioRepository as RadioRepo;
+use App\Repositories\RadioTrackRepository as RadioTrackRepo;
+use App\Services\Shoutcast\ShoutcastClient as Client;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-use App\Services\Shoutcast\ShoutcastClient as Client;
-use App\Repositories\RadioTrackRepository as RadioTrackRepo;
-use App\Repositories\RadioRepository as RadioRepo;
 
-
-
+/**
+ * Class RadioTrackManager
+ * @package App\Services
+ */
 class RadioTrackManager
 {
 
+    /**
+     * @var Client
+     */
     protected $client;
 
+    /**
+     * @var RadioTrackRepo
+     */
     protected $radioTrackRepo;
 
 
+    /**
+     * @param Client $client
+     * @param RadioTrackRepo $radioTrackRepo
+     * @param RadioRepo $radioRepo
+     */
     public function __construct(Client $client, RadioTrackRepo $radioTrackRepo, RadioRepo $radioRepo)
     {
         $this->client = $client;
@@ -26,6 +38,11 @@ class RadioTrackManager
     }
 
 
+    /**
+     * @param $radioId
+     * @return bool
+     * @throws \Exception
+     */
     public function refreshTracks($radioId)
     {
         $radio = $this->radioRepo->get($radioId);
@@ -57,6 +74,10 @@ class RadioTrackManager
     }
 
 
+    /**
+     * @param $title
+     * @param $radioId
+     */
     public function saveRadioTrack($title, $radioId) {
 
         if (empty($title)) {

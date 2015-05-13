@@ -3,6 +3,10 @@
 use Exception;
 use GuzzleHttp\Client;
 
+/**
+ * Class ShoutcastClient
+ * @package App\Services\Shoutcast
+ */
 class ShoutcastClient
 {
     /**
