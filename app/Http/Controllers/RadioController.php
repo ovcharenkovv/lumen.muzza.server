@@ -1,11 +1,9 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Queue;
 use App\Jobs\RefreshRadioTrackJob;
-
 use App\Repositories\RadioRepository as RadioRepo;
 use App\Repositories\RadioTrackRepository as RadioTrackRepo;
+use Illuminate\Support\Facades\Queue;
 
 /**
  * Class RadioController
@@ -64,7 +62,7 @@ class RadioController extends Controller {
      */
     public function indexTracks($radioId)
     {
-        Queue::push(new RefreshRadioTrackJob($radioId));
+        Queue::pushOn('track-parser', new RefreshRadioTrackJob($radioId));
 
         return response()->json(
             $this->radioTrackRepo->getByRadioId($radioId)
