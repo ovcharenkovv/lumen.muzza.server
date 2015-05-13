@@ -39,7 +39,7 @@ class GenreShowTest extends TestCase
      */
     public function testGetGenresShow()
     {
-        $response = $this->call('GET', '/genres/1');
+        $response = $this->call('GET', '/genres/100');
 
         $this->assertResponseOk();
 
