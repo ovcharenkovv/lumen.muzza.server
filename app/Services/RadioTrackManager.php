@@ -40,37 +40,66 @@ class RadioTrackManager
 
     /**
      * @param $radioId
-     * @return bool
-     * @throws \Exception
      */
     public function refreshTracks($radioId)
     {
-        $radio = $this->radioRepo->get($radioId);
-        $currentRadioTrack = $this->client->getStationObject($radio->sh_id);
+        $lastRadioTrackObj = $this->radioTrackRepo->getLastRadioTrack($radioId);
 
-        $lastRadioTrack = $this->radioTrackRepo->getLastRadioTrack($radioId);
+        if ($this->isTrackCreatedMoreThen($lastRadioTrackObj, 60)) {
 
-        if ($lastRadioTrack) {
+            $currentRadioTrackObj = $this->client->getCachedStationObject(
+                $this->radioRepo->getRadioShId($radioId)
+            );
 
-            $lastTrackCreateAt = Carbon::createFromFormat('Y-n-j G:i:s', $lastRadioTrack->created_at);
-
-            if (Carbon::now()->diffInSeconds( $lastTrackCreateAt) <= 60) {
-                return true;
-            }
-
-            if (!$currentRadioTrack->CurrentTrack || $lastRadioTrack->title == $currentRadioTrack->CurrentTrack ) {
-                return true;
+            if ($this->validBothTracks($currentRadioTrackObj, $lastRadioTrackObj)) {
+                $this->saveRadioTrack($currentRadioTrackObj->CurrentTrack, $radioId);
             }
         }
 
+    }
 
+    /**
+     * @param $lastRadioTrack
+     * @param int $seconds
+     * @return bool
+     */
+    public function isTrackCreatedMoreThen($lastRadioTrack, $seconds = 60)
+    {
 
+        if (!$lastRadioTrack) {
+            return true;
+        }
 
+        $lastTrackCreateAt = Carbon::createFromFormat('Y-n-j G:i:s', $lastRadioTrack->created_at);
 
-        $this->saveRadioTrack($currentRadioTrack->CurrentTrack, $radioId);
+        if (Carbon::now()->diffInSeconds($lastTrackCreateAt) > $seconds) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $currentRadioTrackObj
+     * @param $lastRadioTrackObj
+     * @return bool
+     */
+    public function validBothTracks($currentRadioTrackObj, $lastRadioTrackObj)
+    {
+
+        if (!$currentRadioTrackObj->CurrentTrack) {
+            return false;
+        }
+
+        if (!strpos($currentRadioTrackObj->CurrentTrack, '-')) {
+            return false;
+        }
+
+        if ($lastRadioTrackObj && $lastRadioTrackObj->title == $currentRadioTrackObj->CurrentTrack) {
+            return false;
+        }
 
         return true;
-
     }
 
 
@@ -80,15 +109,7 @@ class RadioTrackManager
      */
     public function saveRadioTrack($title, $radioId) {
 
-        if (empty($title)) {
-            return;
-        }
-
         $currentTrack = explode(" - ", $title);
-
-        if (count($currentTrack) < 2 || empty($currentTrack[0]) && empty($currentTrack[1])) {
-            return;
-        }
 
         array_push($currentTrack, $radioId);
 
