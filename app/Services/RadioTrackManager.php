@@ -3,7 +3,6 @@
 use App\Repositories\RadioRepository as RadioRepo;
 use App\Repositories\RadioTrackRepository as RadioTrackRepo;
 use App\Services\Shoutcast\ShoutcastClient as Client;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -90,11 +89,6 @@ class RadioTrackManager
     public function isTrackObjTitlesNotSame($lastRadioTrackObj,$currentRadioTrackObj) {
         return $lastRadioTrackObj->title != $currentRadioTrackObj->CurrentTrack;
     }
-
-
-
-
-
 
 
     /**
