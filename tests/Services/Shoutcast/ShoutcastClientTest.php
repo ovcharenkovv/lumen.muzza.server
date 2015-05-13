@@ -14,7 +14,7 @@ class ShoutcastClientTest extends TestCase
         $station = $client->getStationObject(914897);
 
         $this->assertEquals("New. Music. Unfiltered. idobi.com", $station->Name);
-        $this->assertNotEmpty($station->CurrentTrack);
+        $this->assertObjectHasAttribute('CurrentTrack', $station);
 
     }
 
