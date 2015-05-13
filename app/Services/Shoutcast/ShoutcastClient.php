@@ -37,7 +37,7 @@ class ShoutcastClient
 
         if (is_null($station)) {
             $station = $this->getStationObject($stationId);
-            Cache::put($cacheKey, $station, getenv("SHOUTCAST_REFRESH_DELAY"));
+            Cache::put($cacheKey, $station, getenv("STATION_OBJECT_CACHE_TIME"));
         }
 
         return $station;
@@ -50,7 +50,7 @@ class ShoutcastClient
      */
     public function getStationObject($stationId)
     {
-        $response = $this->client->post('http://www.shoutcast.com/Player/GetCurrentTrack', [
+        $response = $this->client->post(getenv('SHOUTCAST_GET_CURRENT_STATION_URL'), [
             'query' => ['stationID' => $stationId]
         ]);
 

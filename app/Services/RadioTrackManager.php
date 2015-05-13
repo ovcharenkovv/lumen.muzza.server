@@ -45,7 +45,7 @@ class RadioTrackManager
     {
         $lastRadioTrackObj = $this->radioTrackRepo->getLastRadioTrack($radioId);
 
-        if ($this->isTrackCreatedMoreThen($lastRadioTrackObj, getenv('TRACK_REFRESH_DELAY'))) {
+        if ($this->isTrackCreatedMoreThen($lastRadioTrackObj, getenv('TRACK_REFRESH_TIME'))) {
 
             $currentRadioTrackObj = $this->client->getCachedStationObject(
                 $this->radioRepo->getRadioShId($radioId)
