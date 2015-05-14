@@ -1,7 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-
 use App\Repositories\GenreRepository as GenreRepo;
 use App\Repositories\RadioRepository as RadioRepo;
 
@@ -43,6 +41,8 @@ class GenreController extends Controller {
     public function show($genreId)
     {
         $genre = $this->genreRepo->get($genreId);
+
+        if (!$genre) abort(404);
 
         $genre->radios = $this->radioRepo->getByGenreId($genreId);
 

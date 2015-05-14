@@ -66,8 +66,20 @@ class GenreRadiosShowTest extends TestCase
         $this->assertEquals('Lounge', $data->radios[0]->genre);
         $this->assertEquals('http://listen.radionomy.com/FD-LOUNGE-RADIO?icy=http', $data->radios[0]->stream_url);
 
-
     }
+
+    /**
+     * A test for one genres endpoint with radios
+     *
+     * @return void
+     */
+    public function testGetGenreNotFound()
+    {
+        $response = $this->call('GET', '/genres/456456456456456');
+
+        $this->assertResponseStatus(404);
+    }
+
 
 
 }
