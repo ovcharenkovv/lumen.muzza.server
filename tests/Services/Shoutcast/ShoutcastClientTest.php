@@ -24,6 +24,23 @@ class ShoutcastClientTest extends TestCase
     /**
      * @throws Exception
      */
+    public function testGetCachedStationObject()
+    {
+        $client = new ShoutcastClient(
+            new Client()
+        );
+
+        $station = $client->getCachedStationObject(914897);
+
+        $this->assertEquals("New. Music. Unfiltered. idobi.com", $station->Name);
+        $this->assertObjectHasAttribute('CurrentTrack', $station);
+
+    }
+
+
+    /**
+     * @throws Exception
+     */
     public function testException()
     {
         $test = function() {
