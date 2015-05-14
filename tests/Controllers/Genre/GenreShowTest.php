@@ -2,6 +2,10 @@
 
 class GenreShowTest extends TestCase
 {
+    /**
+     * @var
+     */
+    private $genreId;
 
     /**
      * Setup the test environment.
@@ -12,11 +16,21 @@ class GenreShowTest extends TestCase
     {
         parent::setUp();
 
+        $this->generateIds();
+
         DB::insert(
             'INSERT INTO genres
             (id, sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?, ?)',
-            [100, 777, 'Jazz', 'Jazz', 50, '/img/jazz.jpg']
+            [$this->genreId, 777, 'Jazz', 'Jazz', 50, '/img/jazz.jpg']
         );
+    }
+
+    /**
+     *
+     */
+    public function generateIds()
+    {
+        $this->genreId = $this->generateRandomId();
     }
 
     /**
@@ -28,7 +42,7 @@ class GenreShowTest extends TestCase
     {
         parent::tearDown();
 
-        DB::delete('DELETE FROM genres WHERE id = ?', [100]);
+        DB::delete('DELETE FROM genres WHERE id = ?', [$this->genreId]);
     }
 
 
@@ -39,7 +53,7 @@ class GenreShowTest extends TestCase
      */
     public function testGetGenresShow()
     {
-        $response = $this->call('GET', '/genres/100');
+        $response = $this->call('GET', "/genres/$this->genreId");
 
         $this->assertResponseOk();
 

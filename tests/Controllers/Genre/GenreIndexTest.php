@@ -2,6 +2,10 @@
 
 class GenreIndexTest extends TestCase
 {
+    /**
+     * @var
+     */
+    private $genreId;
 
     /**
      * Setup the test environment.
@@ -12,11 +16,21 @@ class GenreIndexTest extends TestCase
     {
         parent::setUp();
 
+        $this->generateIds();
+
         DB::insert(
             'INSERT INTO genres
-            (sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?)',
-            [800, 'Chill', 'Chill', 10, '/img/chill.jpg']
+            (id, sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?, ?)',
+            [$this->genreId, 800, 'Chill', 'Chill', 10, '/img/chill.jpg']
         );
+    }
+
+    /**
+     *
+     */
+    public function generateIds()
+    {
+        $this->genreId = $this->generateRandomId();
     }
 
     /**
@@ -28,7 +42,7 @@ class GenreIndexTest extends TestCase
     {
         parent::tearDown();
 
-        DB::delete('DELETE FROM genres WHERE sh_id = ?', [800]);
+        DB::delete('DELETE FROM genres WHERE id = ?', [$this->genreId]);
     }
 
 
@@ -45,6 +59,7 @@ class GenreIndexTest extends TestCase
 
         $data = json_decode($response->getContent());
 
+        $this->assertEquals($this->genreId, $data[0]->id);
         $this->assertEquals(800, $data[0]->sh_id);
         $this->assertEquals('Chill', $data[0]->name);
         $this->assertEquals('Chill', $data[0]->sh_name);

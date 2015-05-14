@@ -2,16 +2,6 @@
 
 class TestCase extends Laravel\Lumen\Testing\TestCase {
 
-	/**
-	 * Creates the application.
-	 *
-	 * @return \Laravel\Lumen\Application
-	 */
-	public function createApplication()
-	{
-		return require __DIR__.'/../bootstrap/app.php';
-	}
-
     /**
      * Setup the test environment.
      *
@@ -24,8 +14,31 @@ class TestCase extends Laravel\Lumen\Testing\TestCase {
         $this->createApplication();
     }
 
+	/**
+	 * Creates the application.
+	 *
+	 * @return \Laravel\Lumen\Application
+	 */
+	public function createApplication()
+	{
+		return require __DIR__.'/../bootstrap/app.php';
+	}
+
+    /**
+     * @return int
+     */
+    public function generateRandomId()
+    {
+        return rand(100, 10000);
+    }
 
 
+    /**
+     * @param callable $callback
+     * @param string $expectedException
+     * @param null $expectedCode
+     * @param null $expectedMessage
+     */
     public function assertException(callable $callback, $expectedException = 'Exception', $expectedCode = null, $expectedMessage = null)
     {
         if (!class_exists($expectedException) && !interface_exists($expectedException)) {

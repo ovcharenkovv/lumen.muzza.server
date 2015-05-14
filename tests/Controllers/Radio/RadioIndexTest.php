@@ -2,6 +2,14 @@
 
 class RadioIndexTest extends TestCase
 {
+    /**
+     * @var
+     */
+    private $genreId;
+    /**
+     * @var
+     */
+    private $radioId;
 
     /**
      * Setup the test environment.
@@ -12,10 +20,12 @@ class RadioIndexTest extends TestCase
     {
         parent::setUp();
 
+        $this->generateIds();
+
         DB::insert(
             'INSERT INTO genres
             (id, sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?, ?)',
-            [100, 800, 'Punk', 'Punk', 10, '/img/Punk.jpg']
+            [$this->genreId, 800, 'Punk', 'Punk', 10, '/img/Punk.jpg']
         );
 
 
@@ -23,16 +33,25 @@ class RadioIndexTest extends TestCase
             'INSERT INTO radios
             (id, sh_id, name, sh_name, genre, stream_url, genre_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [
-                100,
+                $this->radioId,
                 606342,
                 'Alt Rock 101',
                 'Alt Rock 101',
                 'Punk',
                 'http://streaming.radionomy.com/AltRock101',
-                100
+                $this->genreId
             ]
         );
 
+    }
+
+    /**
+     *
+     */
+    public function generateIds()
+    {
+        $this->genreId = $this->generateRandomId();
+        $this->radioId = $this->generateRandomId();
     }
 
     /**
@@ -44,9 +63,9 @@ class RadioIndexTest extends TestCase
     {
         parent::tearDown();
 
-        DB::delete('DELETE FROM radios WHERE id = ?', [100]);
+        DB::delete('DELETE FROM radios WHERE id = ?', [$this->radioId]);
 
-        DB::delete('DELETE FROM genres WHERE id = ?', [100]);
+        DB::delete('DELETE FROM genres WHERE id = ?', [$this->genreId]);
     }
 
 

@@ -2,6 +2,18 @@
 
 class RadioTrackIndexTest extends TestCase
 {
+    /**
+     * @var
+     */
+    private $genreId;
+    /**
+     * @var
+     */
+    private $radioId;
+    /**
+     * @var
+     */
+    private $trackId;
 
     /**
      * Setup the test environment.
@@ -12,10 +24,12 @@ class RadioTrackIndexTest extends TestCase
     {
         parent::setUp();
 
+        $this->generateIds();
+
         DB::insert(
             'INSERT INTO genres
             (id, sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?, ?)',
-            [200, 800, 'Punk', 'Punk', 10, '/img/Punk.jpg']
+            [$this->genreId, 800, 'Punk', 'Punk', 10, '/img/Punk.jpg']
         );
 
 
@@ -23,13 +37,13 @@ class RadioTrackIndexTest extends TestCase
             'INSERT INTO radios
             (id, sh_id, name, sh_name, genre, stream_url, genre_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [
-                200,
+                $this->radioId,
                 606342,
                 'Alt Rock 101',
                 'Alt Rock 101',
                 'Punk',
                 'http://streaming.radionomy.com/AltRock101',
-                200
+                $this->genreId
             ]
         );
 
@@ -37,14 +51,24 @@ class RadioTrackIndexTest extends TestCase
             'INSERT INTO radio_tracks
             (id, artist_name, track_name, radio_id) VALUES (?, ?, ?, ?)',
             [
-                200,
+                $this->trackId,
                 "Aerosmith",
                 "Livin On The Edge",
-                200
+                $this->radioId
             ]
         );
 
 
+    }
+
+    /**
+     *
+     */
+    public function generateIds()
+    {
+        $this->genreId = $this->generateRandomId();
+        $this->radioId = $this->generateRandomId();
+        $this->trackId = $this->generateRandomId();
     }
 
     /**
@@ -56,11 +80,11 @@ class RadioTrackIndexTest extends TestCase
     {
         parent::tearDown();
 
-        DB::delete('DELETE FROM radio_tracks WHERE id = ?', [200]);
+        DB::delete('DELETE FROM radio_tracks WHERE id = ?', [$this->trackId]);
 
-        DB::delete('DELETE FROM radios WHERE id = ?', [200]);
+        DB::delete('DELETE FROM radios WHERE id = ?', [$this->radioId]);
 
-        DB::delete('DELETE FROM genres WHERE id = ?', [200]);
+        DB::delete('DELETE FROM genres WHERE id = ?', [$this->genreId]);
 
     }
 
@@ -72,16 +96,18 @@ class RadioTrackIndexTest extends TestCase
      */
     public function testGetRadioTrackIndex()
     {
-        $response = $this->call('GET', '/radios/200/tracks');
+        $response = $this->call('GET', "/radios/$this->radioId/tracks");
 
         $this->assertResponseOk();
 
-        $data = json_decode($response->getContent());
+        $tracks = json_decode($response->getContent());
+        $this->assertTrue(count($tracks) > 0);
 
-        $this->assertEquals('Aerosmith', $data[0]->artist_name);
-        $this->assertEquals('Livin On The Edge', $data[0]->track_name);
+        $track = end($tracks);
 
-        $this->assertNotEquals('undefined', $data[0]->artist_name);
+        $this->assertObjectHasAttribute('artist_name', $track);
+        $this->assertObjectHasAttribute('track_name', $track);
+        $this->assertObjectHasAttribute('title', $track);
 
     }
 

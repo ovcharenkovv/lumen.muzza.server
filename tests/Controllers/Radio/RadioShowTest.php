@@ -4,6 +4,15 @@ class RadioShowTest extends TestCase
 {
 
     /**
+     * @var
+     */
+    private $genreId;
+    /**
+     * @var
+     */
+    private $radioId;
+
+    /**
      * Setup the test environment.
      *
      * @return void
@@ -12,10 +21,12 @@ class RadioShowTest extends TestCase
     {
         parent::setUp();
 
+        $this->generateIds();
+
         DB::insert(
             'INSERT INTO genres
             (id, sh_id, name, sh_name, radios_amount, bg) VALUES (?, ?, ?, ?, ?, ?)',
-            [100, 800, 'Acoustic Blues', 'Acoustic Blues', 10, '/img/Acoustic-Blues.jpg']
+            [$this->genreId, 800, 'Acoustic Blues', 'Acoustic Blues', 10, '/img/Acoustic-Blues.jpg']
         );
 
 
@@ -23,16 +34,25 @@ class RadioShowTest extends TestCase
             'INSERT INTO radios
             (id, sh_id, name, sh_name, genre, stream_url, genre_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [
-                200,
+                $this->radioId,
                 23683,
                 'A Better Classic Blues Vintage Station',
                 'A Better Classic Blues Vintage Station',
                 'Acoustic Blues',
                 'http://listen.radionomy.com/A-Better-Classic-Blues-Vintage-Station?icy=http',
-                100
+                $this->genreId
             ]
         );
 
+    }
+
+    /**
+     *
+     */
+    public function generateIds()
+    {
+        $this->genreId = $this->generateRandomId();
+        $this->radioId = $this->generateRandomId();
     }
 
     /**
@@ -44,9 +64,9 @@ class RadioShowTest extends TestCase
     {
         parent::tearDown();
 
-        DB::delete('DELETE FROM radios WHERE id = ?', [200]);
+        DB::delete('DELETE FROM radios WHERE id = ?', [$this->radioId]);
 
-        DB::delete('DELETE FROM genres WHERE id = ?', [100]);
+        DB::delete('DELETE FROM genres WHERE id = ?', [$this->genreId]);
     }
 
 
@@ -57,7 +77,7 @@ class RadioShowTest extends TestCase
      */
     public function testGetRadiosShow()
     {
-        $response = $this->call('GET', '/radios/200');
+        $response = $this->call('GET', "/radios/$this->radioId");
 
         $this->assertResponseOk();
 

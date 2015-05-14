@@ -5,6 +5,9 @@ use GuzzleHttp\Client;
 
 class ShoutcastClientTest extends TestCase
 {
+    /**
+     * @throws Exception
+     */
     public function testGetStationObject()
     {
         $client = new ShoutcastClient(
@@ -18,6 +21,9 @@ class ShoutcastClientTest extends TestCase
 
     }
 
+    /**
+     * @throws Exception
+     */
     public function testException()
     {
         $test = function() {
