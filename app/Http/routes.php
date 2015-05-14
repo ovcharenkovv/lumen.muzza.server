@@ -11,7 +11,7 @@
 */
 
 $app->get('/', function() use ($app) {
-	return "Hello World";
+    return " /genres <br> /genres/{genreId} <br> /radios <br> /radios/{radioId} <br> /radios/{radioId}/tracks <br> ";
 });
 
 $app->get('genres', '\App\Http\Controllers\GenreController@index');
