@@ -57,16 +57,23 @@ class GenreIndexTest extends TestCase
 
         $this->assertResponseOk();
 
-        $data = json_decode($response->getContent());
+        $genres = json_decode($response->getContent());
 
-        $this->assertEquals($this->genreId, $data[0]->id);
-        $this->assertEquals(800, $data[0]->sh_id);
-        $this->assertEquals('Chill', $data[0]->name);
-        $this->assertEquals('Chill', $data[0]->sh_name);
-        $this->assertEquals(10, $data[0]->radios_amount);
-        $this->assertEquals('/img/chill.jpg', $data[0]->bg);
+        foreach ($genres as $genre) {
+            if ($genre->id == $this->genreId) {
 
-        $this->assertNotEquals('undefined', $data[0]->name);
+                $this->assertEquals('Chill', $genre->name);
+                $this->assertEquals('Chill', $genre->sh_name);
+                $this->assertEquals(10, $genre->radios_amount);
+                $this->assertEquals('/img/chill.jpg', $genre->bg);
+
+                $this->assertNotEquals('undefined', $genre->name);
+            }
+
+
+        }
+
+
     }
 
 }
