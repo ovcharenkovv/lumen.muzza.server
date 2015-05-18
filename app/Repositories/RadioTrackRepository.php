@@ -10,6 +10,26 @@ class RadioTrackRepository
 {
     /**
      * @param $radioId
+     * @return mixed
+     */
+    public function getLastRadioTrackTitle($radioId)
+    {
+        $radioTrack = $this->getLastRadioTrack($radioId);
+        return $radioTrack->title;
+    }
+
+    /**
+     * @param $radioId
+     * @return mixed
+     */
+    public function getLastRadioTrack($radioId)
+    {
+        $radioTracks = $this->getByRadioId($radioId);
+        return array_shift($radioTracks);
+    }
+
+    /**
+     * @param $radioId
      * @param int $limit
      * @return mixed
      */
@@ -21,19 +41,10 @@ class RadioTrackRepository
             where radio_id = ?
             order by created_at
             desc limit ?
-            ",[$radioId,$limit]
+            ", [$radioId, $limit]
         );
     }
 
 
-    /**
-     * @param $radioId
-     * @return mixed
-     */
-    public function getLastRadioTrack($radioId)
-    {
-        $radioTracks = $this->getByRadioId($radioId);
-        return array_shift($radioTracks);
-    }
 
 }

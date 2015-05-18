@@ -23,6 +23,14 @@ class ShoutcastClient
         $this->client = $client;
     }
 
+
+    public function getCurrentRadioTrack($stationId)
+    {
+        $station = $this->getCachedStationObject($stationId);
+        return $station->CurrentTrack;
+    }
+
+
     /**
      * @param $stationId
      * @return mixed

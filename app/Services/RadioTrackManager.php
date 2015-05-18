@@ -23,6 +23,10 @@ class RadioTrackManager
      */
     protected $radioTrackRepo;
 
+    /**
+     * @var RadioRepo
+     */
+    protected $radioRepo;
 
     /**
      * @param Client $client
@@ -37,57 +41,25 @@ class RadioTrackManager
     }
 
 
-    /**
-     * @param $radioId
-     */
+
     public function refreshTracks($radioId)
     {
-        $lastRadioTrackObj = $this->radioTrackRepo->getLastRadioTrack($radioId);
 
-        $currentRadioTrackObj = $this->client->getCachedStationObject(
+        $currentRadioTrack = $this->client->getCurrentRadioTrack(
             $this->radioRepo->getRadioShId($radioId)
         );
 
-        if (empty($lastRadioTrackObj) && $this->isCurrentRadioTrackObjValid($currentRadioTrackObj)) {
-            $this->saveRadioTrack($currentRadioTrackObj->CurrentTrack, $radioId);
+        if ($currentRadioTrack) {
+
+            $lastRadioTrack = $this->radioTrackRepo->getLastRadioTrackTitle($radioId);
+
+            if ($currentRadioTrack != $lastRadioTrack) {
+                return $this->saveRadioTrack($currentRadioTrack, $radioId);
+            }
         }
 
+        return false;
 
-        if ($this->isLastRadioTrackObjValid($lastRadioTrackObj) &&
-            $this->isCurrentRadioTrackObjValid($currentRadioTrackObj) &&
-            $this->isTrackObjTitlesNotSame($lastRadioTrackObj, $currentRadioTrackObj)
-        )
-        {
-            $this->saveRadioTrack($currentRadioTrackObj->CurrentTrack, $radioId);
-        }
-
-    }
-
-
-    /**
-     * @param $lastRadioTrack
-     * @return bool
-     */
-    public function isLastRadioTrackObjValid($lastRadioTrack) {
-        return
-            isset($lastRadioTrack->title) &&
-            !empty($lastRadioTrack->title)
-        ;
-    }
-
-    /**
-     * @param $currentRadioTrackObj
-     * @return bool
-     */
-    public function isCurrentRadioTrackObjValid($currentRadioTrackObj) {
-        return
-            isset($currentRadioTrackObj->CurrentTrack) &&
-            !empty($currentRadioTrackObj->CurrentTrack)&&
-            strpos($currentRadioTrackObj->CurrentTrack, '-')
-        ;
-    }
-    public function isTrackObjTitlesNotSame($lastRadioTrackObj,$currentRadioTrackObj) {
-        return $lastRadioTrackObj->title != $currentRadioTrackObj->CurrentTrack;
     }
 
 
