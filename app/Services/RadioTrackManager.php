@@ -41,13 +41,14 @@ class RadioTrackManager
     }
 
 
+
+
     /**
      * @param $radioId
      * @return bool
      */
     public function refreshTracks($radioId)
     {
-
         $currentRadioTrack = $this->client->getCurrentRadioTrack(
             $this->radioRepo->getRadioShId($radioId)
         );
@@ -65,13 +66,7 @@ class RadioTrackManager
 
     }
 
-    /**
-     * @param $title
-     * @return bool
-     */
-    private function isTrackValid($title) {
-        return trim($title) && strpos($title, '-');
-    }
+
 
 
     /**
@@ -87,6 +82,14 @@ class RadioTrackManager
         return DB::insert(
             'insert into radio_tracks (artist_name, track_name, radio_id) values (?, ?, ?)', $currentTrack
         );
+    }
+
+    /**
+     * @param $title
+     * @return bool
+     */
+    public function isTrackValid($title) {
+        return trim($title) && strpos($title, '-');
     }
 
 }
