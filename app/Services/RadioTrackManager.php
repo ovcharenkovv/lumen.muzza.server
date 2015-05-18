@@ -41,7 +41,10 @@ class RadioTrackManager
     }
 
 
-
+    /**
+     * @param $radioId
+     * @return bool
+     */
     public function refreshTracks($radioId)
     {
 
@@ -49,7 +52,7 @@ class RadioTrackManager
             $this->radioRepo->getRadioShId($radioId)
         );
 
-        if ($currentRadioTrack) {
+        if ($this->isTrackValid($currentRadioTrack)) {
 
             $lastRadioTrack = $this->radioTrackRepo->getLastRadioTrackTitle($radioId);
 
@@ -60,6 +63,14 @@ class RadioTrackManager
 
         return false;
 
+    }
+
+    /**
+     * @param $title
+     * @return bool
+     */
+    private function isTrackValid($title) {
+        return trim($title) && strpos($title, '-');
     }
 
 
