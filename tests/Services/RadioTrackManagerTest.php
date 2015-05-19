@@ -14,10 +14,15 @@ class RadioTrackManagerTest extends TestCase
         $radioTrackRepoMock = $this->getMock('App\Repositories\RadioTrackRepository');
         $radioRepoMock = $this->getMock('App\Repositories\RadioRepository');
 
-        $trackManager = new RadioTrackManager($clientMock, $radioTrackRepoMock, $radioRepoMock);
+        $trackManager = new RadioTrackManager(
+            $clientMock,
+            $radioTrackRepoMock,
+            $radioRepoMock
+        );
+
+
 
         $method = $this->getMethod('App\Services\RadioTrackManager', 'isTrackValid');
-
 
         $this->assertTrue(
             $method->invoke($trackManager, "Track Name - Artist")
@@ -43,9 +48,31 @@ class RadioTrackManagerTest extends TestCase
             $method->invoke($trackManager, "  \n\t")
         );
 
-
-
     }
+
+//    public function testRefreshTracks()
+//    {
+//        $clientMock = $this->getMock('App\Services\Shoutcast\ShoutcastClient',[],[],'',false);
+//        $radioTrackRepoMock = $this->getMock('App\Repositories\RadioTrackRepository');
+//        $radioRepoMock = $this->getMock('App\Repositories\RadioRepository');
+//
+//        $clientMock
+//            ->shouldReceive('getCurrentRadioTrack')
+//            ->once()
+//            ->andReturn('');
+//
+//        $trackManager = new RadioTrackManager(
+//            $clientMock,
+//            $radioTrackRepoMock,
+//            $radioRepoMock
+//        );
+//
+//
+//        $result = $trackManager->refreshTracks(0);
+//
+//        $this->assertFalse($result);
+//
+//    }
 
 
 }
