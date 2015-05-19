@@ -68,5 +68,20 @@ class TestCase extends Laravel\Lumen\Testing\TestCase {
         $this->fail("Failed asserting that exception$extraInfo was thrown.");
     }
 
+    /**
+     * Get protected or private method
+     *
+     * @param $className
+     * @param $methodName
+     * @return ReflectionMethod
+     */
+    public function getMethod($className, $methodName)
+    {
+        $class = new ReflectionClass($className);
+        $method = $class->getMethod($methodName);
+        $method->setAccessible(true);
+        return $method;
+    }
+
 
 }

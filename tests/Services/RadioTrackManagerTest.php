@@ -16,14 +16,34 @@ class RadioTrackManagerTest extends TestCase
 
         $trackManager = new RadioTrackManager($clientMock, $radioTrackRepoMock, $radioRepoMock);
 
-        $this->assertTrue($trackManager->isTrackValid("Test - Test"));
-        $this->assertTrue($trackManager->isTrackValid("One - Two - Tree"));
+        $method = $this->getMethod('App\Services\RadioTrackManager', 'isTrackValid');
 
 
-        $this->assertFalse($trackManager->isTrackValid("Test Test"));
-        $this->assertFalse($trackManager->isTrackValid(null));
-        $this->assertFalse($trackManager->isTrackValid(""));
-        $this->assertFalse($trackManager->isTrackValid("     "));
+        $this->assertTrue(
+            $method->invoke($trackManager, "Track Name - Artist")
+        );
+        $this->assertTrue(
+            $method->invoke($trackManager, "One - Two - Tree")
+        );
+
+
+        $this->assertFalse(
+            $method->invoke($trackManager, "Test Test")
+        );
+        $this->assertFalse(
+            $method->invoke($trackManager, null)
+        );
+        $this->assertFalse(
+            $method->invoke($trackManager, "")
+        );
+        $this->assertFalse(
+            $method->invoke($trackManager, " ")
+        );
+        $this->assertFalse(
+            $method->invoke($trackManager, "  \n\t")
+        );
+
+
 
     }
 
