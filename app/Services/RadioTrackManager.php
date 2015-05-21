@@ -78,6 +78,7 @@ class RadioTrackManager
     /**
      * @param $title
      * @param $radioId
+     * @return bool
      */
     public function saveRadioTrack($title, $radioId)
     {
@@ -86,9 +87,13 @@ class RadioTrackManager
 
         array_push($currentTrack, $radioId);
 
-        return DB::insert(
-            'insert into radio_tracks (artist_name, track_name, radio_id) values (?, ?, ?)', $currentTrack
-        );
+        if (count($currentTrack) == 3) {
+            return DB::insert(
+                'insert into radio_tracks (artist_name, track_name, radio_id) values (?, ?, ?)', $currentTrack
+            );
+        }
+
+        return false;
     }
 
 }

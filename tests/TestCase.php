@@ -32,6 +32,21 @@ class TestCase extends Laravel\Lumen\Testing\TestCase {
         return rand(100, 10000);
     }
 
+    /**
+     * @return string
+     */
+    public function generateRandomStr($length = 255)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+
+
 
     /**
      * @param callable $callback
