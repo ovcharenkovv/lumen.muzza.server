@@ -7,6 +7,7 @@ class GenreController extends Controller {
 
     public function index()
     {
+        dd('exit');
         return response()->json(
             DB::select('select * from genres order by name asc')
         );
